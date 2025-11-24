@@ -128,6 +128,9 @@ type KV interface {
 	// Commit commits outstanding txns into the underlying backend.
 	Commit()
 
+	// LocalRev returns the current revision of the local replica
+	LocalRev() int64
+
 	// Restore restores the KV store from a backend.
 	Restore(b backend.Backend) error
 	Close() error

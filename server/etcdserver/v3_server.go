@@ -133,6 +133,10 @@ func (s *EtcdServer) Range(ctx context.Context, r *pb.RangeRequest) (*pb.RangeRe
 		trace.LogIfLong(traceThreshold)
 	}(time.Now())
 
+	if r.Revision > 0 && r.Revision <= s.kv.LocalRev() {
+		r.Serializable = true
+	}
+
 	if !r.Serializable {
 		err = s.linearizableReadNotify(ctx)
 		trace.Step("agreement among raft nodes before linearized reading")

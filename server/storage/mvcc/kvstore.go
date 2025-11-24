@@ -288,6 +288,12 @@ func (s *store) Commit() {
 	s.b.ForceCommit()
 }
 
+func (s *store) LocalRev() int64 {
+	s.revMu.RLock()
+	defer s.revMu.RUnlock()
+	return s.currentRev
+}
+
 func (s *store) Restore(b backend.Backend) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
